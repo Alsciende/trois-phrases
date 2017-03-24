@@ -1,16 +1,341 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+<html lang="en">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>3 Phrases</title>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <link href="https://fonts.googleapis.com/css?family=Permanent+Marker|Rochester" rel="stylesheet">
+
+        <style type="text/css">
+
+            @media print {
+                @page { 
+                    size: 210mm 297mm; 
+                    margin: 1cm;
+                }
+
+                html, body {
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+                .form {
+                    display: none;
+                }
+                .resultat {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: nowrap;
+                    align-items: stretch;
+                    page-break-before: always;
+                    page-break-after: always;
+                    page-break-inside: avoid;
+                }
+                .titre {
+                    border: 2px solid black;
+                }
+                .titre h2 {
+                    font-family: 'Permanent Marker', cursive;
+                    font-size: 3em;
+                    text-align: center;
+                    color: white;
+                    margin-bottom: 0;
+                }
+                .titre .stars {
+                    text-align: right;
+                    color: black;
+                    font-size: 2em;
+                }
+                h3 {
+                    font-family: 'Rochester', cursive;
+
+                }
+                .illustration {
+                    flex-basis: 3cm;
+                    object-fit: contain;
+                }
+                .cahier {
+                    height: 10px;
+                    flex: 1;
+                    object-fit: cover;
+                    object-position: top left;
+                }
+                .vocabulaire {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                }
+                .vocabulaire ul {
+                    flex: none;
+                    width: 33%;
+                    border: 3px dashed black;
+                    list-style: none;
+                    padding: 0;
+                    border-radius: 10px;
+                    
+                }
+                .vocabulaire ul li {
+                    float: left;
+                    margin-left: 1em;
+                    font-weight: bold;
+                    
+                }
+                .phrase {
+                    height: 10px;
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: nowrap;
+                    align-items: flex-start;
+                }
+                .mots {
+                    margin: 5px 0;
+                }
+                .mots span {
+                    display: inline-block;
+                    font-weight: bold;
+                    margin: 0 5px;
+                    padding: 5px 10px;
+                    border: 3px dotted black;
+                    border-radius: 10px;
+                }
+                .regle {
+                    width: 100%;
+                }
+                .regle-1 {
+                    flex: 1;
+                    border-bottom: 1px dashed grey;
+                }
+                .regle-2 {
+                    flex: 2;
+                    border-bottom: 1px dotted grey;
+                }
+                .regle-3 {
+                    flex: 1;
+                    border-bottom: 2px solid grey;
+                }
+                .regle-4 {
+                    flex: 2;
+                    border-bottom: 1px dotted grey;
+                }
+                .regle-5 {
+                    flex: 1;
+                }
+            }
+        </style>
     </head>
     <body>
-        <div>TODO write content</div>
+<!--        
+        <div class="container">
+            <div class="row form">
+                <div class="col-md-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="titre">Titre</label>
+                            <input type="text" class="form-control" id="titre" value="A la piscine">
+                        </div>
+                        <div class="form-group">
+                            <label for="phrase1">1ère phrase</label>
+                            <input type="text" class="form-control" id="phrase1" value="Deux enfants sont à la piscine.">
+                        </div>
+                        <div class="form-group">
+                            <label for="phrase2">2ème phrase</label>
+                            <input type="text" class="form-control" id="phrase2" value="Un enfant nage avec une planche.">
+                        </div>
+                        <div class="form-group">
+                            <label for="phrase3">3ème phrase</label>
+                            <input type="text" class="form-control" id="phrase3" value="L'autre marche sur le bord.">
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Lien vers l'image</label>
+                            <input type="text" class="form-control" id="image" value="http://i.imgur.com/f0i4u8r.png">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="voca1">1er vocabulaire</label>
+                            <textarea class="form-control" id="voca1" rows="10">
+la piscine
+une bouée
+un brassard
+l’eau
+une planche
+le bord
+un maillot de bain
+un bonnet de bain
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="voca1">2ème vocabulaire</label>
+                            <textarea class="form-control" id="voca2" rows="5">
+nager
+marcher
+enfiler
+flotter
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="voca1">3ème vocabulaire</label>
+                            <textarea class="form-control" id="voca3" rows="5">
+content
+rayé
+fier
+                            </textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+-->
+        <div class="resultat">
+            <div class="titre">
+                <h2>À la piscine</h2>
+                <div class="stars">&#9733;&#9733;&#9733;&#9733;</div>
+            </div>
+            <h3>Voici une illustration :</h3>
+            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
+            <h3>Écris trois phrases pour décrire l'illustration :</h3>
+            <img src="images/grands-carreaux-mappage.png" alt="Carreaux" class="cahier">
+        </div>
+        
+        <div class="resultat">
+            <div class="titre">
+                <h2>À la piscine</h2>
+                <div class="stars">&#9733;&#9733;&#9733;</div>
+            </div>
+            <h3>Voici une illustration :</h3>
+            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
+            <h3>Voici le vocabulaire :</h3>
+            <div class="vocabulaire">
+                <ul>
+                    <li>la piscine</li>
+                    <li>une bouée</li>
+                    <li>un brassard</li>
+                    <li>l'eau</li>
+                    <li>une planche</li>
+                    <li>le bord</li>
+                    <li>un maillot de bain</li>
+                    <li>un bonnet de bain</li>
+                </ul>
+                <ul>
+                    <li>nager</li>
+                    <li>marcher</li>
+                    <li>enfiler</li>
+                    <li>frotter</li>
+                </ul>
+                <ul>
+                    <li>content</li>
+                    <li>fier</li>
+                    <li>rayé</li>
+
+                </ul>
+            </div>
+            <h3>Écris trois phrases pour décrire l'illustration :</h3>
+            <img src="images/grands-carreaux-mappage.png" alt="Carreaux" class="cahier">
+        </div>
+
+        <div class="resultat">
+            <div class="titre">
+                <h2>À la piscine</h2>
+                <div class="stars">&#9733;&#9733;</div>
+            </div>
+            <h3>Voici une illustration :</h3>
+            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
+            <h3>Écris trois phrases pour décrire l'illustration :</h3>
+            <div class="phrase">
+                <div class="mots">
+                    <span>à</span><span>enfants</span><span>sont</span><span>Deux</span><span>piscine.</span><span>la</span>
+                </div>
+                <div class="regle regle-1"></div>
+                <div class="regle regle-2"></div>
+                <div class="regle regle-3"></div>
+                <div class="regle regle-4"></div>
+                <div class="regle regle-5"></div>
+            </div>
+            <div class="phrase">
+                <div class="mots">
+                    <span>Un</span><span>nage</span><span>une</span><span>enfant</span><span>planche.</span><span>avec</span>
+                </div>
+                <div class="regle regle-1"></div>
+                <div class="regle regle-2"></div>
+                <div class="regle regle-3"></div>
+                <div class="regle regle-4"></div>
+                <div class="regle regle-5"></div>
+            </div>
+            <div class="phrase">
+                <div class="mots">
+                    <span>le</span><span>L'autre</span><span>sur</span><span>bord.</span><span>marche</span>
+                </div>
+                <div class="regle regle-1"></div>
+                <div class="regle regle-2"></div>
+                <div class="regle regle-3"></div>
+                <div class="regle regle-4"></div>
+                <div class="regle regle-5"></div>
+            </div>
+        </div>
+        <div class="resultat">
+            <div class="titre">
+                <h2>À la piscine</h2>
+                <div class="stars">&#9733;</div>
+            </div>
+            <h3>Voici une illustration :</h3>
+            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
+            <h3>Écris trois phrases pour décrire l'illustration :</h3>
+            <div class="phrase">
+                <div class="regle regle-1"></div>
+                <div class="regle regle-2"></div>
+                <div class="regle regle-3"></div>
+                <div class="regle regle-4"></div>
+                <div class="regle regle-5"></div>
+            </div>
+            <div class="phrase">
+                <div class="regle regle-1"></div>
+                <div class="regle regle-2"></div>
+                <div class="regle regle-3"></div>
+                <div class="regle regle-4"></div>
+                <div class="regle regle-5"></div>
+            </div>
+            <div class="phrase">
+                <div class="regle regle-1"></div>
+                <div class="regle regle-2"></div>
+                <div class="regle regle-3"></div>
+                <div class="regle regle-4"></div>
+                <div class="regle regle-5"></div>
+            </div>
+                <div class="mots">
+                    <span>à</span><span>enfants</span><span>sont</span><span>Deux</span><span>piscine.</span><span>la</span>
+                </div>
+                <div class="mots">
+                    <span>Un</span><span>nage</span><span>une</span><span>enfant</span><span>planche.</span><span>avec</span>
+                </div>
+                <div class="mots">
+                    <span>le</span><span>L'autre</span><span>sur</span><span>bord.</span><span>marche</span>
+                </div>
+        </div>
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
