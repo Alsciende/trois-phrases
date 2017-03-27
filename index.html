@@ -320,7 +320,11 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
         <script type="text/javascript">
+function filterEmpty(elt) {
+    return elt !== "";
+}
 function createVocaComputed(name) {
     return {
         get: function () {
@@ -333,7 +337,7 @@ function createVocaComputed(name) {
 }
 function createPhraseComputed(name) {
     return function () {
-        return this[name].split(" ").map(function (mot) {
+        return _.shuffle(_.filter(this[name].split(" "))).map(function (mot) {
             return "<span>" + mot + "</span>";
         }).join("");
     };
