@@ -19,6 +19,19 @@
         <link href="https://fonts.googleapis.com/css?family=Permanent+Marker|Rochester" rel="stylesheet">
 
         <style type="text/css">
+            @media screen {
+                h1 {
+                    font-family: 'Permanent Marker', cursive;
+                }
+                .form label {
+                    font-family: 'Rochester', cursive;
+                    font-size: 1.5em;
+                    font-weight: normal;
+                }
+                .page {
+                    display: none;
+                }
+            }
 
             @media print {
                 @page { 
@@ -26,7 +39,7 @@
                     margin: 1cm;
                 }
 
-                html, body {
+                html, body, #app {
                     width: 100%;
                     height: 100%;
                     margin: 0;
@@ -35,7 +48,7 @@
                 .form {
                     display: none;
                 }
-                .resultat {
+                .page {
                     width: 100%;
                     height: 100%;
                     display: flex;
@@ -53,7 +66,6 @@
                     font-family: 'Permanent Marker', cursive;
                     font-size: 3em;
                     text-align: center;
-                    color: white;
                     margin-bottom: 0;
                 }
                 .titre .stars {
@@ -89,13 +101,13 @@
                     list-style: none;
                     padding: 0;
                     border-radius: 10px;
-                    
+
                 }
                 .vocabulaire ul li {
                     float: left;
                     margin-left: 1em;
                     font-weight: bold;
-                    
+
                 }
                 .phrase {
                     height: 10px;
@@ -142,200 +154,216 @@
         </style>
     </head>
     <body>
-<!--        
-        <div class="container">
-            <div class="row form">
-                <div class="col-md-6">
-                    <form>
-                        <div class="form-group">
-                            <label for="titre">Titre</label>
-                            <input type="text" class="form-control" id="titre" value="A la piscine">
-                        </div>
-                        <div class="form-group">
-                            <label for="phrase1">1ère phrase</label>
-                            <input type="text" class="form-control" id="phrase1" value="Deux enfants sont à la piscine.">
-                        </div>
-                        <div class="form-group">
-                            <label for="phrase2">2ème phrase</label>
-                            <input type="text" class="form-control" id="phrase2" value="Un enfant nage avec une planche.">
-                        </div>
-                        <div class="form-group">
-                            <label for="phrase3">3ème phrase</label>
-                            <input type="text" class="form-control" id="phrase3" value="L'autre marche sur le bord.">
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Lien vers l'image</label>
-                            <input type="text" class="form-control" id="image" value="http://i.imgur.com/f0i4u8r.png">
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-6">
-                    <form>
-                        <div class="form-group">
-                            <label for="voca1">1er vocabulaire</label>
-                            <textarea class="form-control" id="voca1" rows="10">
-la piscine
-une bouée
-un brassard
-l’eau
-une planche
-le bord
-un maillot de bain
-un bonnet de bain
-                            </textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="voca1">2ème vocabulaire</label>
-                            <textarea class="form-control" id="voca2" rows="5">
-nager
-marcher
-enfiler
-flotter
-                            </textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="voca1">3ème vocabulaire</label>
-                            <textarea class="form-control" id="voca3" rows="5">
-content
-rayé
-fier
-                            </textarea>
-                        </div>
-                    </form>
+        <div id="app">
+            <div class="container">
+                <div class="row form">
+                    <div class="col-md-12">
+                        <h1>Génération de planches d'exercices de Français</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <form>
+                            <div class="form-group">
+                                <label for="titre">Titre</label>
+                                <input type="text" class="form-control" id="titre" v-model="titre">
+                            </div>
+                            <div class="form-group">
+                                <label for="phrase1">1ère phrase</label>
+                                <input type="text" class="form-control" id="phrase1" v-model="phrase1">
+                            </div>
+                            <div class="form-group">
+                                <label for="phrase2">2ème phrase</label>
+                                <input type="text" class="form-control" id="phrase2" v-model="phrase2">
+                            </div>
+                            <div class="form-group">
+                                <label for="phrase3">3ème phrase</label>
+                                <input type="text" class="form-control" id="phrase3" v-model="phrase3">
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Lien vers l'image</label>
+                                <input type="text" class="form-control" id="image" v-model="image">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form>
+                            <div class="form-group">
+                                <label for="voca1">1er vocabulaire</label>
+                                <textarea class="form-control" id="voca1" v-model="splitVoca1" rows="10"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="voca1">2ème vocabulaire</label>
+                                <textarea class="form-control" id="voca2" v-model="splitVoca2" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="voca1">3ème vocabulaire</label>
+                                <textarea class="form-control" id="voca3" v-model="splitVoca3" rows="5"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" type="button" v-on:click="print">Lancer l'impression</button>
+                    </div>
                 </div>
             </div>
-        </div>
--->
-        <div class="resultat">
-            <div class="titre">
-                <h2>À la piscine</h2>
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;</div>
-            </div>
-            <h3>Voici une illustration :</h3>
-            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
-            <h3>Écris trois phrases pour décrire l'illustration :</h3>
-            <img src="images/grands-carreaux-mappage.png" alt="Carreaux" class="cahier">
-        </div>
-        
-        <div class="resultat">
-            <div class="titre">
-                <h2>À la piscine</h2>
-                <div class="stars">&#9733;&#9733;&#9733;</div>
-            </div>
-            <h3>Voici une illustration :</h3>
-            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
-            <h3>Voici le vocabulaire :</h3>
-            <div class="vocabulaire">
-                <ul>
-                    <li>la piscine</li>
-                    <li>une bouée</li>
-                    <li>un brassard</li>
-                    <li>l'eau</li>
-                    <li>une planche</li>
-                    <li>le bord</li>
-                    <li>un maillot de bain</li>
-                    <li>un bonnet de bain</li>
-                </ul>
-                <ul>
-                    <li>nager</li>
-                    <li>marcher</li>
-                    <li>enfiler</li>
-                    <li>frotter</li>
-                </ul>
-                <ul>
-                    <li>content</li>
-                    <li>fier</li>
-                    <li>rayé</li>
 
-                </ul>
+            <div class="page">
+                <div class="titre">
+                    <h2>{{ titre }}</h2>
+                    <div class="stars">&#9733;&#9733;&#9733;&#9733;</div>
+                </div>
+                <h3>Voici une illustration :</h3>
+                <img v-bind:src="image" alt="Illustration" class="illustration">
+                <h3>Écris trois phrases pour décrire l'illustration :</h3>
+                <img src="images/grands-carreaux-mappage.png" alt="Carreaux" class="cahier">
             </div>
-            <h3>Écris trois phrases pour décrire l'illustration :</h3>
-            <img src="images/grands-carreaux-mappage.png" alt="Carreaux" class="cahier">
-        </div>
 
-        <div class="resultat">
-            <div class="titre">
-                <h2>À la piscine</h2>
-                <div class="stars">&#9733;&#9733;</div>
-            </div>
-            <h3>Voici une illustration :</h3>
-            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
-            <h3>Écris trois phrases pour décrire l'illustration :</h3>
-            <div class="phrase">
-                <div class="mots">
-                    <span>à</span><span>enfants</span><span>sont</span><span>Deux</span><span>piscine.</span><span>la</span>
+            <div class="page">
+                <div class="titre">
+                    <h2>{{ titre }}</h2>
+                    <div class="stars">&#9733;&#9733;&#9733;</div>
                 </div>
-                <div class="regle regle-1"></div>
-                <div class="regle regle-2"></div>
-                <div class="regle regle-3"></div>
-                <div class="regle regle-4"></div>
-                <div class="regle regle-5"></div>
-            </div>
-            <div class="phrase">
-                <div class="mots">
-                    <span>Un</span><span>nage</span><span>une</span><span>enfant</span><span>planche.</span><span>avec</span>
+                <h3>Voici une illustration :</h3>
+                <img v-bind:src="image" alt="Illustration" class="illustration">
+                <h3>Voici le vocabulaire :</h3>
+                <div class="vocabulaire">
+                    <ul>
+                        <li v-for="voca in voca1">
+                            {{ voca }}
+                        </li>
+                    </ul>
+                    <ul>
+                        <li v-for="voca in voca2">
+                            {{ voca }}
+                        </li>
+                    </ul>
+                    <ul>
+                        <li v-for="voca in voca3">
+                            {{ voca }}
+                        </li>
+                    </ul>
                 </div>
-                <div class="regle regle-1"></div>
-                <div class="regle regle-2"></div>
-                <div class="regle regle-3"></div>
-                <div class="regle regle-4"></div>
-                <div class="regle regle-5"></div>
+                <h3>Écris trois phrases pour décrire l'illustration :</h3>
+                <img src="images/grands-carreaux-mappage.png" alt="Carreaux" class="cahier">
             </div>
-            <div class="phrase">
-                <div class="mots">
-                    <span>le</span><span>L'autre</span><span>sur</span><span>bord.</span><span>marche</span>
-                </div>
-                <div class="regle regle-1"></div>
-                <div class="regle regle-2"></div>
-                <div class="regle regle-3"></div>
-                <div class="regle regle-4"></div>
-                <div class="regle regle-5"></div>
-            </div>
-        </div>
-        <div class="resultat">
-            <div class="titre">
-                <h2>À la piscine</h2>
-                <div class="stars">&#9733;</div>
-            </div>
-            <h3>Voici une illustration :</h3>
-            <img src="http://i.imgur.com/f0i4u8r.png" alt="Illustration" class="illustration">
-            <h3>Écris trois phrases pour décrire l'illustration :</h3>
-            <div class="phrase">
-                <div class="regle regle-1"></div>
-                <div class="regle regle-2"></div>
-                <div class="regle regle-3"></div>
-                <div class="regle regle-4"></div>
-                <div class="regle regle-5"></div>
-            </div>
-            <div class="phrase">
-                <div class="regle regle-1"></div>
-                <div class="regle regle-2"></div>
-                <div class="regle regle-3"></div>
-                <div class="regle regle-4"></div>
-                <div class="regle regle-5"></div>
-            </div>
-            <div class="phrase">
-                <div class="regle regle-1"></div>
-                <div class="regle regle-2"></div>
-                <div class="regle regle-3"></div>
-                <div class="regle regle-4"></div>
-                <div class="regle regle-5"></div>
-            </div>
-                <div class="mots">
-                    <span>à</span><span>enfants</span><span>sont</span><span>Deux</span><span>piscine.</span><span>la</span>
-                </div>
-                <div class="mots">
-                    <span>Un</span><span>nage</span><span>une</span><span>enfant</span><span>planche.</span><span>avec</span>
-                </div>
-                <div class="mots">
-                    <span>le</span><span>L'autre</span><span>sur</span><span>bord.</span><span>marche</span>
-                </div>
-        </div>
 
+            <div class="page">
+                <div class="titre">
+                    <h2>{{ titre }}</h2>
+                    <div class="stars">&#9733;&#9733;</div>
+                </div>
+                <h3>Voici une illustration :</h3>
+                <img v-bind:src="image" alt="Illustration" class="illustration">
+                <h3>Écris trois phrases pour décrire l'illustration :</h3>
+                <div class="phrase">
+                    <div class="mots" v-html="mots1"></div>
+                    <div class="regle regle-1"></div>
+                    <div class="regle regle-2"></div>
+                    <div class="regle regle-3"></div>
+                    <div class="regle regle-4"></div>
+                    <div class="regle regle-5"></div>
+                </div>
+                <div class="phrase">
+                    <div class="mots" v-html="mots2"></div>
+                    <div class="regle regle-1"></div>
+                    <div class="regle regle-2"></div>
+                    <div class="regle regle-3"></div>
+                    <div class="regle regle-4"></div>
+                    <div class="regle regle-5"></div>
+                </div>
+                <div class="phrase">
+                    <div class="mots" v-html="mots3"></div>
+                    <div class="regle regle-1"></div>
+                    <div class="regle regle-2"></div>
+                    <div class="regle regle-3"></div>
+                    <div class="regle regle-4"></div>
+                    <div class="regle regle-5"></div>
+                </div>
+            </div>
+
+            <div class="page">
+                <div class="titre">
+                    <h2>{{ titre }}</h2>
+                    <div class="stars">&#9733;</div>
+                </div>
+                <h3>Voici une illustration :</h3>
+                <img v-bind:src="image" alt="Illustration" class="illustration">
+                <h3>Écris trois phrases pour décrire l'illustration :</h3>
+                <div class="phrase">
+                    <div class="regle regle-1"></div>
+                    <div class="regle regle-2"></div>
+                    <div class="regle regle-3"></div>
+                    <div class="regle regle-4"></div>
+                    <div class="regle regle-5"></div>
+                </div>
+                <div class="phrase">
+                    <div class="regle regle-1"></div>
+                    <div class="regle regle-2"></div>
+                    <div class="regle regle-3"></div>
+                    <div class="regle regle-4"></div>
+                    <div class="regle regle-5"></div>
+                </div>
+                <div class="phrase">
+                    <div class="regle regle-1"></div>
+                    <div class="regle regle-2"></div>
+                    <div class="regle regle-3"></div>
+                    <div class="regle regle-4"></div>
+                    <div class="regle regle-5"></div>
+                </div>
+                <div class="mots" v-html="mots1"></div>
+                <div class="mots" v-html="mots2"></div>
+                <div class="mots" v-html="mots3"></div>
+            </div>
+        </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script type="text/javascript">
+function createVocaComputed(name) {
+    return {
+        get: function () {
+            return this[name].join("\n");
+        },
+        set: function (value) {
+            this[name] = value.split("\n")/*.filter(function (el) { return el !== ""; })*/;
+        }
+    };
+}
+function createPhraseComputed(name) {
+    return function () {
+        return this[name].split(" ").map(function (mot) {
+            return "<span>" + mot + "</span>";
+        }).join("");
+    };
+}
+var app = new Vue({
+    el: '#app',
+    data: {
+        titre: "A la piscine",
+        phrase1: "Deux enfants sont à la piscine.",
+        phrase2: "Un enfant nage avec une planche.",
+        phrase3: "L'autre marche sur le bord.",
+        image: "http://i.imgur.com/f0i4u8r.png",
+        voca1: ["la piscine", "une bouée", "un brassard", "l’eau", "une planche", "le bord", "un maillot de bain", "un bonnet de bain"],
+        voca2: ["nager", "marcher", "enfiler", "flotter"],
+        voca3: ["content", "rayé", "fier"]
+    },
+    computed: {
+        splitVoca1: createVocaComputed('voca1'),
+        splitVoca2: createVocaComputed('voca2'),
+        splitVoca3: createVocaComputed('voca3'),
+        mots1: createPhraseComputed('phrase1'),
+        mots2: createPhraseComputed('phrase2'),
+        mots3: createPhraseComputed('phrase3')
+    },
+    methods: {
+        print: function () {
+            window.print();
+        }
+    }
+});
+        </script>
     </body>
 </html>
